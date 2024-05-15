@@ -13,8 +13,16 @@ int init_args(t_args *args, char *argv[])
     return (1);
 }
 
-void    init_philos()
+void    init_philos(t_args *args)
 {
+    int i;
+
+    i = 0;
+    while (i < args.n_philos)
+    {
+        
+        i++;
+    }
 
 }
 
