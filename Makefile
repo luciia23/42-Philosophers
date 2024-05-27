@@ -21,6 +21,8 @@ GREEN			=	\033[0;32m
 SRC = 	main.c\
 		utils.c\
 		init.c\
+		threads.c\
+		actions.c\
 
 OBJS = $(SRC:%.c=$(BIN)/%.o)
 
