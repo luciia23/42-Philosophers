@@ -36,7 +36,7 @@ int check_input(char *argv[])
         return (error("Invalid time to eat\n", 0));
     if (!is_int(argv[4]) || ft_atoi(argv[4]) <= 0)
         return (error("Invalid time to sleep\n", 0));
-    if ((argv[5] && !is_int(argv[5])) || ft_atoi(argv[5]) < 0)
+    if (argv[5] && (!is_int(argv[5]) || ft_atoi(argv[5]) < 0))
         return (error("Invalid number of times each philosophers must eat\n", 0));
     return (1);
 }

@@ -29,9 +29,11 @@ typedef struct s_philo {
 typedef struct s_args {
     int n_philos;
     int dead_flag;
+    int n_meals;
     pthread_mutex_t *forks;
     pthread_mutex_t print_lock;
     pthread_mutex_t monitor;
+    pthread_mutex_t dead_lock;
     t_philo *philos;
 }           t_args;
 
@@ -46,6 +48,7 @@ int error(char *msg, int n_return);
 
 // THREADS
 int	create_thread(t_args *args);
+void    print(char *msg, int nbr, t_philo *philo);
 
 // ACTIONS
 void    eat(t_philo *philo);

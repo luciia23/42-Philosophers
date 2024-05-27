@@ -5,8 +5,8 @@ DIR_SRC = src
 
 INCLUDE = -I inc
 CFLAGS = -pthread -Wall -Werror -Wextra
-CC = gcc $(CFLAGS) $(INCLUDE)
-# -fsanitize=address -g3
+CC = gcc $(CFLAGS) $(INCLUDE) -fsanitize=thread -g3
+# -fsanitize=address
 
 # ------- LIBFT -------
 LIBFT_DIR = libft
