@@ -22,6 +22,7 @@ SRC = 	main.c\
 		init.c\
 		threads.c\
 		actions.c\
+		monitor.c\
 
 OBJS = $(SRC:%.c=$(BIN)/%.o)
 

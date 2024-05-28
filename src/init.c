@@ -28,14 +28,10 @@ void	init_philos(t_args *args, t_philo *philos)
 		philos[i].nbr = i + 1;
 		philos[i].times_eaten = 0;
 		philos[i].last_meal_time = get_current_time();
+		philos[i].start_time = get_current_time();
 		philos[i].l_fork = &args->forks[i];
 		philos[i].r_fork = &args->forks[(i + 1) % args->n_philos];
 		args->philos[i].args = args;
-		// philos[i].l_fork = &forks[i];
-		// if (i == 0)
-		// 	philos[i].r_fork = &forks[philos[i].num_of_philos - 1];
-		// else
-		// 	philos[i].r_fork = &forks[i - 1];
 		i++;
 	}
 }
@@ -64,11 +60,6 @@ int	init_program(t_args *args, char *argv[])
 {
 	args->dead_flag = 0;
 	args->n_philos = ft_atoi(argv[1]);
-	if(argv[5])
-		args->n_meals = ft_atoi(argv[5]);
-	else
-		args->n_meals = -1;
-	printf("MEALS:%d\n", args->n_meals);
 	if (!alloc(args))
 		return (0);
 	init_args(args->philos, argv, args->n_philos);

@@ -15,7 +15,8 @@
 typedef struct s_philo {
     int         nbr;
     int         times_eaten;
-    long        last_meal_time;
+    long int       last_meal_time;
+    long int    start_time;
     int time_die;
     int time_eat;
     int time_sleep;
@@ -50,10 +51,15 @@ int error(char *msg, int n_return);
 int	create_thread(t_args *args);
 void    print(char *msg, int nbr, t_philo *philo);
 
+int	check_dead_flag(t_philo *philo);
+
 // ACTIONS
 void    eat(t_philo *philo);
 void    philo_sleep(t_philo *philo);
 void    think(t_philo *philo);
+
+// MONITOR
+void	*monitor(void *p);
 
 
 #endif

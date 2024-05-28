@@ -1,11 +1,46 @@
 # include "philo.h"
 
-void    print(char *msg, int nbr, t_philo *philo)
+// void    print(char *msg, int nbr, t_philo *philo)
+// {
+//     long    time;
+
+//     pthread_mutex_lock(&philo->args->print_lock);
+//     time = get_current_time() - philo->start_time;
+//     if (check_dead(philo))
+//         printf("%zu %d %s\n",time, nbr, msg);
+//     pthread_mutex_unlock(&philo->args->print_lock);
+// }
+
+// int	ft_usleep(int time)
+// {
+// 	int	start;
+
+// 	start = get_current_time();
+// 	while ((get_current_time() - start) < time)
+// 		usleep(time / 10);
+// 	return (0);
+// }
+
+int	ft_usleep(size_t milliseconds)
 {
+	size_t	start;
+
+	start = get_current_time();
+	while ((get_current_time() - start) < milliseconds)
+		usleep(500);
+	return (0);
+}
+
+void print(char *msg, int nbr, t_philo *philo)
+{
+    long time;
+
     pthread_mutex_lock(&philo->args->print_lock);
-    printf("%d %s\n", nbr, msg);
+    time = get_current_time() - philo->start_time;
+    printf("%ld %d %s\n", time, nbr, msg);
     pthread_mutex_unlock(&philo->args->print_lock);
 }
+
 
 void    eat(t_philo *philo)
 {
@@ -14,11 +49,12 @@ void    eat(t_philo *philo)
     pthread_mutex_lock(philo->l_fork);
     print(FORK_MSG, philo->nbr, philo);
     print(EAT_MSG, philo->nbr, philo);
-    pthread_mutex_lock(&philo->args->monitor);
+    //pthread_mutex_lock(&philo->args->monitor);
     philo->last_meal_time = get_current_time();
     philo->times_eaten++;
-    pthread_mutex_unlock(&philo->args->monitor);
-    usleep(philo->time_eat);
+   // pthread_mutex_unlock(&philo->args->monitor);
+    //usleep(philo->time_eat * 1000);
+    ft_usleep(philo->time_eat);
     pthread_mutex_unlock(philo->r_fork);
     pthread_mutex_unlock(philo->l_fork);
 
@@ -49,5 +85,6 @@ void    think(t_philo *philo)
 void    philo_sleep(t_philo *philo)
 {
     print(SLEEP_MSG, philo->nbr, philo);
-    usleep(philo->time_sleep);
+    //usleep(philo->time_sleep * 1000);
+    ft_usleep(philo->time_sleep);
 }

@@ -24,5 +24,6 @@ int	main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	if (!create_thread(&args))
 		return(EXIT_FAILURE);
+	clear_data(&args);
 	return (0);
 }
