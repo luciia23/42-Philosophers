@@ -7,12 +7,10 @@ void	*monitor(void *p)
 	int		i;
 
 	args = (t_args *)p;
-	i = -1;
-	//num err
-	printf("n meals:%d\n", args->n_meals);
 	while (1)
 	{
 		all_full = 1;
+		i = -1;
 		while (++i < args->n_philos)
 		{
 			pthread_mutex_lock(&args->monitor);
@@ -59,7 +57,7 @@ void    *routine(void *p)
 	t_philo	*philo;
 
 	philo = (t_philo *)p;
-	while(!philo->args->dead_flag)
+	while(check_dead(philo))
 	{
 		eat(philo);
 		philo_sleep(philo);
@@ -73,9 +71,6 @@ int	create_thread(t_args *args)
 	pthread_t	p;
 	int			i;
 
-	//TO:DO -> destroying the mutex
-
-	// if (args->philos->n_meals > 0)???
 	if (pthread_create(&p, NULL, monitor, &args))
 		return (error("Error creating thread", 0));
 	i = -1;
@@ -84,6 +79,8 @@ int	create_thread(t_args *args)
 		if (pthread_create(&args->philos[i].thread, NULL, routine, &args->philos[i]))
 			return (error("Error creating thread", 0));
 	}
+	if (pthread_join(p, NULL))
+		return (error("Error joining thread", 0));
 	i = -1;
 	while(++i < args->n_philos)
 	{
