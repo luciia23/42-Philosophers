@@ -17,6 +17,8 @@ void    *routine(void *p)
 	t_philo	*philo;
 
 	philo = (t_philo *)p;
+	if (philo->nbr % 2 == 0)
+		ft_usleep(1);
 	while(check_dead_flag(philo))
 	{
 		eat(philo);

@@ -21,15 +21,6 @@
 // 	return (0);
 // }
 
-int	ft_usleep(size_t milliseconds)
-{
-	size_t	start;
-
-	start = get_current_time();
-	while ((get_current_time() - start) < milliseconds)
-		usleep(500);
-	return (0);
-}
 
 void print(char *msg, int nbr, t_philo *philo)
 {
