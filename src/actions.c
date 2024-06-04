@@ -28,7 +28,8 @@ void print(char *msg, int nbr, t_philo *philo)
 
     pthread_mutex_lock(&philo->args->print_lock);
     time = get_current_time() - philo->start_time;
-    printf("%ld %d %s\n", time, nbr, msg);
+    if (check_dead_flag(philo))
+        printf("%ld %d %s\n", time, nbr, msg);
     pthread_mutex_unlock(&philo->args->print_lock);
 }
 
@@ -63,7 +64,7 @@ void eat_func(t_philo *philo)
     pthread_mutex_lock(&args->print_lock);
     printf("Philosopher %d is eating\n", philo->nbr);
     pthread_mutex_unlock(&args->print_lock);
-    usleep(philo->time_eat * 1000);
+    // usleep(philo->time_eat * 1000);
     pthread_mutex_unlock(philo->l_fork);
     pthread_mutex_unlock(philo->r_fork);
 }

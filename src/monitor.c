@@ -11,8 +11,8 @@ int check_dead(t_args *args)
         long time_since_last_meal = get_current_time() - args->philos[i].last_meal_time;
         if (time_since_last_meal > args->philos[i].time_die)
         {
-            args->dead_flag = 1;
             print("died", args->philos[i].nbr, &args->philos[i]);
+            args->dead_flag = 1;
             pthread_mutex_unlock(&args->monitor);
             return (1); // Return 1 indicates a philosopher has died
         }
