@@ -12,7 +12,9 @@ int check_dead(t_args *args)
         if (time_since_last_meal > args->philos[i].time_die)
         {
             print("died", args->philos[i].nbr, &args->philos[i]);
+            pthread_mutex_lock(&args->dead_lock);
             args->dead_flag = 1;
+            pthread_mutex_unlock(&args->dead_lock);
             pthread_mutex_unlock(&args->monitor);
             return (1); // Return 1 indicates a philosopher has died
         }
@@ -21,7 +23,7 @@ int check_dead(t_args *args)
     return (0); // Return 0 indicates no philosopher has died
 }
 
-int check_full(t_args *args)
+int check_meals(t_args *args)
 {
     int i;
     int all_full;
@@ -45,16 +47,15 @@ int check_full(t_args *args)
     return (0); // Return 0 indicates not all philosophers are full
 }
 
-void	*monitor(void *p)
+void *monitor(void *p)
 {
-	t_args	*args;
+    t_args *args;
 
-	args = (t_args *)p;
-	while (1)
-	{
-        if (check_dead(args) || check_full(args))
-            break ;
-	}
-	return ((void *)0);
+    args = (t_args *)p;
+    while (1)
+    {
+        if (check_dead(args) || check_meals(args))
+            break;
+    }
+    return ((void *)0);
 }
-

@@ -8,6 +8,8 @@ void	clear_data(t_args *args)
 	while (++i < args->n_philos)
 		pthread_mutex_destroy(&args->forks[i]);
 	pthread_mutex_destroy(&args->print_lock);
+	pthread_mutex_destroy(&args->dead_lock);
+	pthread_mutex_destroy(&args->monitor);
 	free(args->philos);
 	free(args->forks);
 }
@@ -22,7 +24,7 @@ int	main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	if (!init_program(&args, argv))
 		return (EXIT_FAILURE);
-	if (!create_thread(&args))
+	if (!create_philos(&args))
 		return(EXIT_FAILURE);
 	clear_data(&args);
 	return (0);

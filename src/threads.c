@@ -28,7 +28,7 @@ void    *routine(void *p)
 	return((void *)0);
 }
 
-int	create_thread(t_args *args)
+int	create_philos(t_args *args)
 {
 	pthread_t	p;
 	int			i;

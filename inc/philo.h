@@ -49,7 +49,7 @@ int error(char *msg, int n_return);
 int	ft_usleep(size_t milliseconds);
 
 // THREADS
-int	create_thread(t_args *args);
+int	create_philos(t_args *args);
 void    print(char *msg, int nbr, t_philo *philo);
 
 int	check_dead_flag(t_philo *philo);

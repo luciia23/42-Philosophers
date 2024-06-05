@@ -21,8 +21,6 @@ long   get_current_time(void)
 int error(char *msg, int n_return)
 {
     write(2, msg, ft_strlen(msg));
-    // if (args)
-    //     clear_data(args);
     return (n_return);
 }
 
