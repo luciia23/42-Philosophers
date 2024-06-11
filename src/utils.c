@@ -10,24 +10,23 @@
 // }
 
 // /* Same as usleep but more precise with big numbers */
-// void	ft_usleep(long long time)
-// {
-// 	long long	start;
-
-// 	start = get_time();
-// 	while (get_time() < start + time)
-// 		usleep(10);
-// }
-
-int	ft_usleep(size_t milliseconds)
+void	ft_usleep(long long time)
 {
-	size_t	start;
+	long long	start;
 
 	start = get_current_time();
-	while ((get_current_time() - start) < milliseconds)
+	while (get_current_time() < start + time)
 		usleep(500);
-	return (0);
 }
+// int	ft_usleep(size_t milliseconds)
+// {
+// 	size_t	start;
+
+// 	start = get_current_time();
+// 	while ((get_current_time() - start) < milliseconds)
+// 		usleep(500);
+// 	return (0);
+// }
 
 long   get_current_time(void)
 {

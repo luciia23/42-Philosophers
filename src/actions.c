@@ -51,39 +51,6 @@ void eat(t_philo *philo)
     pthread_mutex_unlock(philo->l_fork);
 }
 
-
-
-// void eat(t_philo *philo)
-// {
-//     // Primero adquirir siempre el tenedor de menor dirección
-//     if (philo->r_fork < philo->l_fork)
-//     {
-//         pthread_mutex_lock(philo->r_fork);
-//         print(FORK_MSG, philo->nbr, philo);
-//         pthread_mutex_lock(philo->l_fork);
-//         print(FORK_MSG, philo->nbr, philo);
-//     }
-//     else
-//     {
-//         pthread_mutex_lock(philo->l_fork);
-//         print(FORK_MSG, philo->nbr, philo);
-//         pthread_mutex_lock(philo->r_fork);
-//         print(FORK_MSG, philo->nbr, philo);
-//     }
-
-//     print(EAT_MSG, philo->nbr, philo);
-//     pthread_mutex_lock(&philo->args->monitor);
-//     philo->last_meal_time = get_current_time();
-//     philo->times_eaten++;
-//     pthread_mutex_unlock(&philo->args->monitor);
-
-//     // Dormir sin mantener los mutexes de los tenedores
-//     ft_usleep(philo->time_eat);
-
-//     pthread_mutex_unlock(philo->r_fork);
-//     pthread_mutex_unlock(philo->l_fork);
-// }
-
 // void    eat(t_philo *philo)
 // {
 //     pthread_mutex_lock(philo->r_fork);
@@ -115,6 +82,5 @@ void    think(t_philo *philo)
 void    philo_sleep(t_philo *philo)
 {
     print(SLEEP_MSG, philo->nbr, philo);
-    //usleep(philo->time_sleep * 1000);
     ft_usleep(philo->time_sleep);
 }

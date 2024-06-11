@@ -56,6 +56,7 @@ void *monitor(void *p)
     {
         if (check_dead(args) || check_meals(args))
             break;
+        ft_usleep(100);
     }
     return ((void *)0);
 }

@@ -46,7 +46,7 @@ void	clear_data(t_args *args);
 // UTILS
 long   get_current_time(void);
 int error(char *msg, int n_return);
-int	ft_usleep(size_t milliseconds);
+void	ft_usleep(long long time);
 
 // THREADS
 int	create_philos(t_args *args);
