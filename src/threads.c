@@ -1,4 +1,19 @@
-# include "philo.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   threads.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lcollado <lcollado@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/18 19:14:52 by lcollado          #+#    #+#             */
+/*   Updated: 2024/06/18 19:20:50 by lcollado         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philo.h"
+
+	// if (philo->nbr % 2 == 0)
+	// 	ft_usleep(10);
 
 int	check_dead_flag(t_philo *philo)
 {
@@ -6,26 +21,24 @@ int	check_dead_flag(t_philo *philo)
 	if (philo->args->dead_flag == 1)
 	{
 		pthread_mutex_unlock(&philo->args->dead_lock);
-		return(0);
+		return (0);
 	}
 	pthread_mutex_unlock(&philo->args->dead_lock);
 	return (1);
 }
 
-void    *routine(void *p)
+void	*routine(void *p)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)p;
-	if (philo->nbr % 2 == 0)
-		ft_usleep(10);
-	while(check_dead_flag(philo))
+	while (check_dead_flag(philo))
 	{
 		eat(philo);
 		philo_sleep(philo);
 		think(philo);
 	}
-	return((void *)0);
+	return ((void *)0);
 }
 
 int	create_philos(t_args *args)
@@ -36,15 +49,16 @@ int	create_philos(t_args *args)
 	if (pthread_create(&p, NULL, monitor, args))
 		return (error("Error creating thread", 0));
 	i = -1;
-	while(++i < args->n_philos)
+	while (++i < args->n_philos)
 	{
-		if (pthread_create(&args->philos[i].thread, NULL, routine, &args->philos[i]))
+		if (pthread_create(&args->philos[i].thread,
+				NULL, routine, &args->philos[i]))
 			return (error("Error creating thread", 0));
 	}
 	if (pthread_join(p, NULL))
 		return (error("Error joining thread", 0));
 	i = -1;
-	while(++i < args->n_philos)
+	while (++i < args->n_philos)
 	{
 		if (pthread_join(args->philos[i].thread, NULL))
 			return (error("Error joining thread", 0));

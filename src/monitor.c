@@ -1,62 +1,90 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitor.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lcollado <lcollado@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/18 19:14:42 by lcollado          #+#    #+#             */
+/*   Updated: 2024/06/18 19:19:19 by lcollado         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-int check_dead(t_args *args)
+void	print(char *msg, int nbr, t_philo *philo)
 {
-    int i;
+	long	time;
 
-    i = -1;
-    while (++i < args->n_philos)
-    {
-        pthread_mutex_lock(&args->monitor);
-        long time_since_last_meal = get_current_time() - args->philos[i].last_meal_time;
-        if (time_since_last_meal > args->philos[i].time_die)
-        {
-            print("died", args->philos[i].nbr, &args->philos[i]);
-            pthread_mutex_lock(&args->dead_lock);
-            args->dead_flag = 1;
-            pthread_mutex_unlock(&args->dead_lock);
-            pthread_mutex_unlock(&args->monitor);
-            return (1); // Return 1 indicates a philosopher has died
-        }
-        pthread_mutex_unlock(&args->monitor);
-    }
-    return (0); // Return 0 indicates no philosopher has died
+	pthread_mutex_lock(&philo->args->print_lock);
+	time = get_time() - philo->start_time;
+	if (check_dead_flag(philo))
+		printf("%ld %d %s\n", time, nbr, msg);
+	pthread_mutex_unlock(&philo->args->print_lock);
 }
 
-int check_meals(t_args *args)
+int	check_dead(t_args *args)
 {
-    int i;
-    int all_full;
+	int		i;
+	long	last_meal;
 
-    all_full = 1;
-    i = -1;
-    while (++i < args->n_philos)
-    {
-        pthread_mutex_lock(&args->monitor);
-        if (args->philos[i].n_meals > 0 && args->philos[i].times_eaten < args->philos[i].n_meals)
-            all_full = 0;
-        pthread_mutex_unlock(&args->monitor);
-    }
-    if (args->philos[0].n_meals > 0 && all_full)
-    {
-        pthread_mutex_lock(&args->dead_lock);
-        args->dead_flag = 1;
-        pthread_mutex_unlock(&args->dead_lock);
-        return (1); // Return 1 indicates all philosophers are full
-    }
-    return (0); // Return 0 indicates not all philosophers are full
+	i = -1;
+	while (++i < args->n_philos)
+	{
+		pthread_mutex_lock(&args->monitor);
+		last_meal = get_time() - args->philos[i].last_meal_time;
+		if (last_meal > args->philos[i].time_die)
+		{
+			printf("%ld->%d\n", last_meal, args->philos[i].time_die);
+			print("died", args->philos[i].nbr, &args->philos[i]);
+			pthread_mutex_lock(&args->dead_lock);
+			args->dead_flag = 1;
+			pthread_mutex_unlock(&args->dead_lock);
+			pthread_mutex_unlock(&args->monitor);
+			return (1);
+		}
+		pthread_mutex_unlock(&args->monitor);
+	}
+	return (0);
 }
 
-void *monitor(void *p)
+int	check_meals(t_args *args)
 {
-    t_args *args;
+	int	i;
+	int	all_full;
 
-    args = (t_args *)p;
-    while (1)
-    {
-        if (check_dead(args) || check_meals(args))
-            break;
-        ft_usleep(100);
-    }
-    return ((void *)0);
+	all_full = 1;
+	i = -1;
+	if (args->philos[0].n_meals > 0)
+	{
+		while (++i < args->n_philos)
+		{
+			pthread_mutex_lock(&args->monitor);
+			if (args->philos[i].n_meals > 0
+				&& args->philos[i].times_eaten < args->philos[i].n_meals)
+				all_full = 0;
+			pthread_mutex_unlock(&args->monitor);
+		}
+		if (args->philos[0].n_meals > 0 && all_full)
+		{
+			pthread_mutex_lock(&args->dead_lock);
+			args->dead_flag = 1;
+			pthread_mutex_unlock(&args->dead_lock);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+void	*monitor(void *p)
+{
+	t_args	*args;
+
+	args = (t_args *)p;
+	while (1)
+	{
+		if (check_dead(args) || check_meals(args))
+			break ;
+	}
+	return ((void *)0);
 }

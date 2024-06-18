@@ -6,7 +6,7 @@
 /*   By: lcollado <lcollado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 08:39:23 by lcollado          #+#    #+#             */
-/*   Updated: 2024/04/05 20:03:10 by lcollado         ###   ########.fr       */
+/*   Updated: 2024/06/18 17:15:58 by lcollado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <string.h>
-#include <stdint.h>
+# include <stdint.h>
 
 # define BUFFER_SIZE 42
 
