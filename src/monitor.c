@@ -6,22 +6,11 @@
 /*   By: lcollado <lcollado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 19:14:42 by lcollado          #+#    #+#             */
-/*   Updated: 2024/06/18 19:19:19 by lcollado         ###   ########.fr       */
+/*   Updated: 2024/06/19 19:19:38 by lcollado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	print(char *msg, int nbr, t_philo *philo)
-{
-	long	time;
-
-	pthread_mutex_lock(&philo->args->print_lock);
-	time = get_time() - philo->start_time;
-	if (check_dead_flag(philo))
-		printf("%ld %d %s\n", time, nbr, msg);
-	pthread_mutex_unlock(&philo->args->print_lock);
-}
 
 int	check_dead(t_args *args)
 {
@@ -35,7 +24,6 @@ int	check_dead(t_args *args)
 		last_meal = get_time() - args->philos[i].last_meal_time;
 		if (last_meal > args->philos[i].time_die)
 		{
-			printf("%ld->%d\n", last_meal, args->philos[i].time_die);
 			print("died", args->philos[i].nbr, &args->philos[i]);
 			pthread_mutex_lock(&args->dead_lock);
 			args->dead_flag = 1;
@@ -81,6 +69,8 @@ void	*monitor(void *p)
 	t_args	*args;
 
 	args = (t_args *)p;
+	pthread_mutex_lock(&args->start);
+	pthread_mutex_unlock(&args->start);
 	while (1)
 	{
 		if (check_dead(args) || check_meals(args))

@@ -6,7 +6,7 @@
 /*   By: lcollado <lcollado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 19:14:13 by lcollado          #+#    #+#             */
-/*   Updated: 2024/06/18 19:17:25 by lcollado         ###   ########.fr       */
+/*   Updated: 2024/06/19 18:26:04 by lcollado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	init_args(t_philo *philos, char *argv[], int n_philos)
 	i = -1;
 	while (++i < n_philos)
 	{
+		memset(&philos[i], 0, sizeof(t_philo));
 		philos[i].time_die = ft_atoi(argv[2]);
 		philos[i].time_eat = ft_atoi(argv[3]);
 		philos[i].time_sleep = ft_atoi(argv[4]);
@@ -39,8 +40,6 @@ void	init_philos(t_args *args, t_philo *philos)
 	{
 		philos[i].nbr = i + 1;
 		philos[i].times_eaten = 0;
-		philos[i].last_meal_time = get_time();
-		philos[i].start_time = get_time();
 		philos[i].l_fork = &args->forks[i];
 		philos[i].r_fork = &args->forks[(i + 1) % args->n_philos];
 		args->philos[i].args = args;
@@ -80,6 +79,6 @@ int	init_program(t_args *args, char *argv[])
 	pthread_mutex_init(&args->monitor, NULL);
 	pthread_mutex_init(&args->print_lock, NULL);
 	pthread_mutex_init(&args->dead_lock, NULL);
-	pthread_mutex_init(&args->meal_lock, NULL);
+	pthread_mutex_init(&args->start, NULL);
 	return (1);
 }

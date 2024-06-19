@@ -6,45 +6,34 @@
 /*   By: lcollado <lcollado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 19:14:24 by lcollado          #+#    #+#             */
-/*   Updated: 2024/06/18 19:17:04 by lcollado         ###   ########.fr       */
+/*   Updated: 2024/06/19 21:02:06 by lcollado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	take_forks(t_philo *philo)
+void	print(char *msg, int nbr, t_philo *philo)
 {
-	if (philo->nbr % 2 == 0)
-	{
-		pthread_mutex_lock(philo->r_fork);
-		print(FORK_MSG, philo->nbr, philo);
-		pthread_mutex_lock(philo->l_fork);
-		print(FORK_MSG, philo->nbr, philo);
-	}
-	else
-	{
-		pthread_mutex_lock(philo->l_fork);
-		print(FORK_MSG, philo->nbr, philo);
-		pthread_mutex_lock(philo->r_fork);
-		print(FORK_MSG, philo->nbr, philo);
-	}
+	long	time;
+
+	pthread_mutex_lock(&philo->args->print_lock);
+	time = get_time() - philo->start_time;
+	if (check_dead_flag(philo))
+		printf("%ld %d %s\n", time, nbr, msg);
+	pthread_mutex_unlock(&philo->args->print_lock);
 }
 
-void	one_philo(t_philo *philo)
+void	take_forks(t_philo *philo)
 {
-	if (philo->args->n_philos == 1)
-	{
-		pthread_mutex_lock(philo->r_fork);
-		print(FORK_MSG, philo->nbr, philo);
-		ft_usleep(philo->time_die);
-		pthread_mutex_unlock(philo->r_fork);
-		return ;
-	}
+	pthread_mutex_lock(philo->l_fork);
+	print(FORK_MSG, philo->nbr, philo);
+	pthread_mutex_lock(philo->r_fork);
+	print(FORK_MSG, philo->nbr, philo);
 }
+
 
 void	eat(t_philo *philo)
 {
-	one_philo(philo);
 	take_forks(philo);
 	print(EAT_MSG, philo->nbr, philo);
 	pthread_mutex_lock(&philo->args->monitor);

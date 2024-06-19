@@ -6,7 +6,7 @@
 /*   By: lcollado <lcollado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 19:14:36 by lcollado          #+#    #+#             */
-/*   Updated: 2024/06/18 19:18:15 by lcollado         ###   ########.fr       */
+/*   Updated: 2024/06/19 18:26:19 by lcollado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	clear_data(t_args *args)
 	pthread_mutex_destroy(&args->print_lock);
 	pthread_mutex_destroy(&args->dead_lock);
 	pthread_mutex_destroy(&args->monitor);
+	pthread_mutex_destroy(&args->start);
 	free(args->philos);
 	free(args->forks);
 }

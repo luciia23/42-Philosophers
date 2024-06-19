@@ -6,7 +6,7 @@
 /*   By: lcollado <lcollado@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/18 19:25:52 by lcollado          #+#    #+#             */
-/*   Updated: 2024/06/18 19:30:16 by lcollado         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:56:06 by lcollado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ typedef struct s_philo
 	pthread_t		thread;
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	*r_fork;
+
+	pthread_mutex_t	internal_mutex;
+
 	struct s_args	*args;
 }					t_philo;
 
@@ -48,8 +51,9 @@ typedef struct s_args
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	monitor;
-	pthread_mutex_t	meal_lock;
 	pthread_mutex_t	dead_lock;
+	pthread_mutex_t	start;
+
 	t_philo			*philos;
 }					t_args;
 
